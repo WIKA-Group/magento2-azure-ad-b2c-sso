@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<config>
+    <default>
+        <azure_b2c>
+            <connection>
+                <default_algorithm>RS256</default_algorithm>
+            </connection>
+        </azure_b2c>
+    </default>
+</config>

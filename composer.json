@@ -1,0 +1,29 @@
+{
+    "name": "wika-group/magento2-azure-ad-b2c-sso",
+    "description": "Module to add support for a login via Azure B2C",
+    "keywords": ["OAuth", "Service Provider", "SSO", "Single Sign On", "Authentication", "Magento", "Magento2"],
+    "type": "magento2-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "WIKA Group",
+            "email": "webapps-admin@wika.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "version": "1.0.0",
+    "require": {
+        "php": "^8.1",
+        "firebase/php-jwt": "^6.10",
+        "league/oauth2-client": "^2.7",
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "WikaGroup\\AzureB2cSSO\\": ""
+        }
+    }
+}

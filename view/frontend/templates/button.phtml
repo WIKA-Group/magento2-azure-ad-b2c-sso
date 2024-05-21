@@ -1,0 +1,11 @@
+<?php
+/** @var \WikaGroup\AzureB2cSSO\Block\OAuth $block */
+
+if ($block->getHelper()->getSettings()->isSsoEnabled() && $block->getHelper()->getSettings()->showButton()):
+?>
+<div <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButtonContainer"<?php else: ?> class="primary"<?php endif ?>>
+    <a id="wikaGroupAzureSsoButton" href="<?= $block->getUrl('azureb2c/login/authorize') ?>"
+        <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButton"<?php else: ?> class="action login primary"<?php endif ?>
+    >Login with SSO</a>
+</div>
+<?php endif ?>
