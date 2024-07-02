@@ -125,7 +125,7 @@ class AzureB2cProvider extends GenericProvider
                 throw new RuntimeException('iss on id_token does not match issuer value on the OpenID configuration');
             }
             // aud validation
-            if (strpos($payloadJson['aud'], (string)$this->scopeConfig->getValue('azure_b2c/credentials/client_id')) === false) {
+            if (strpos($payloadJson['aud'], $this->settings->getClientId()) === false) {
                 throw new RuntimeException('aud on id_token does not match the client_id for this application');
             }
             // exp validation
