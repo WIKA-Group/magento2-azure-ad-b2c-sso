@@ -41,7 +41,7 @@ class AzureB2cProvider extends GenericProvider
         $accessToken = $this->getAccessTokenResponse($code);
         $claims = $this->validateIdToken($accessToken['id_token']);
         $claims['oauthId'] = $claims['sub'];
-        $claims['email'] = $claims['emails'][0];
+        $claims['email'] = $claims['email'] ?? $claims['emails'][0];
         return $claims;
     }
 
