@@ -2,10 +2,16 @@
 /** @var \WikaGroup\AzureB2cSSO\Block\OAuth $block */
 
 if ($block->getHelper()->getSettings()->isSsoEnabled() && $block->getHelper()->getSettings()->showButton()):
+    $containerCss = $block->getHelper()->getSettings()->getCustomContainerCss();
+    $buttonCss = $block->getHelper()->getSettings()->getCustomButtonCss();
+    if (!$block->getHelper()->getSettings()->useCustomCss()) {
+        $containerCss = 'primary ' . $containerCss;
+        $buttonCss = 'action login primary ' . $buttonCss;
+    }
 ?>
-<div <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButtonContainer"<?php else: ?> class="primary"<?php endif ?>>
+<div <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButtonContainer"<?php endif ?> class="<?= $containerCss ?>">
     <a id="wikaGroupAzureSsoButton" href="<?= $block->getUrl('azureb2c/login/authorize') ?>"
-        <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButton"<?php else: ?> class="action login primary"<?php endif ?>
+        <?php if ($block->getHelper()->getSettings()->useCustomCss()): ?> id="wikaGroupAzureSsoButton"<?php endif ?> class="<?= $buttonCss ?>"
     >Login with SSO</a>
 </div>
 <?php endif ?>

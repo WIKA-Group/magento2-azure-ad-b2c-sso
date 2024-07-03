@@ -18,6 +18,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log out from Azure</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Log out from Azure if customer logs out</comment>
+                </field>
+
                 <field id="show_button" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Show button</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -29,10 +35,14 @@
                     <comment>You can use the element IDs "wikaGroupAzureSsoButtonContainer" and "wikaGroupAzureSsoButton" in your CSS</comment>
                 </field>
 
-                <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Log out from Azure</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Log out from Azure if customer logs out</comment>
+                <field id="custom_container_class" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Container classes</label>
+                    <comment>The given text will be added to the class attribute of the div around the button.</comment>
+                </field>
+
+                <field id="custom_button_class" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Button classes</label>
+                    <comment>The given text will be added to the class attribute of the button.</comment>
                 </field>
             </group>
 

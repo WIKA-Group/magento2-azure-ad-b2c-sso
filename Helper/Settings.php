@@ -28,6 +28,16 @@ class Settings extends AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/use_custom_css');
     }
 
+    public function getCustomContainerCss(): string
+    {
+        return (string)$this->scopeConfig->getValue('azure_b2c/general/custom_container_class');
+    }
+
+    public function getCustomButtonCss(): string
+    {
+        return (string)$this->scopeConfig->getValue('azure_b2c/general/custom_button_class');
+    }
+
     public function logoutFromAzure(): bool
     {
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/log_out_from_azure');
