@@ -2,6 +2,8 @@
 
 Magento2 Module to add support for a login via Azure B2C
 
+> **Important:** Ensure that the email address is delivered in the Azure B2C response.
+
 ## Configuration
 The configuration can be found in the admin backend under:  
 Stores -> Settings -> Configuration -> WIKA GROUP -> Azure B2C
