@@ -27,12 +27,13 @@
                 <field id="show_button" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Show button</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show button "Login with SSO" on login page</comment>
                 </field>
 
                 <field id="use_custom_css" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Use custom CSS</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>You can use the element IDs "wikaGroupAzureSsoButtonContainer" and "wikaGroupAzureSsoButton" in your CSS</comment>
+                    <comment>(Only if show button) You can use the element IDs "wikaGroupAzureSsoButtonContainer" and "wikaGroupAzureSsoButton" in your CSS</comment>
                 </field>
 
                 <field id="custom_container_class" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
