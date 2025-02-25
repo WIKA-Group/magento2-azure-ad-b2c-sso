@@ -2,6 +2,9 @@
 <config>
     <default>
         <azure_b2c>
+            <general>
+                <create_mage_customer>1</create_mage_customer>
+            </general>
             <connection>
                 <default_algorithm>RS256</default_algorithm>
             </connection>

@@ -18,6 +18,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
+                <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Create new Magento customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
                 <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Log out from Azure</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

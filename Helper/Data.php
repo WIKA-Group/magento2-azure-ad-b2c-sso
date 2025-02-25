@@ -12,6 +12,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Message\Manager;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use WikaGroup\AzureB2cSSO\Model\AzureB2cProvider;
@@ -28,6 +29,7 @@ class Data extends AbstractHelper
         private Session $session,
         private LoggerInterface $logger,
         private Manager $messageManager,
+        private StoreManagerInterface $storeManager,
         // Mage2 Customer
         private CustomerFactory $customerFactory,
         private CustomerRes $customerRes,
@@ -64,8 +66,14 @@ class Data extends AbstractHelper
             // Search for email afterwards
             $customer = $this->findCustomerByEmail($userData['email']);
             if ($customer == null || empty($customer->getId())) {
-                $this->addError((string)__('There is no registered customer with the given email address.'));
-                return;
+                if ($this->settings->createMagentoCustomer()) {
+                    if ($this->createCustomer($userData) === null) {
+                        return;
+                    }
+                } else {
+                    $this->addError((string)__('There is no registered customer with the given email address.'));
+                    return;
+                }
             }
             try {
                 /** @var User $user */
@@ -85,6 +93,31 @@ class Data extends AbstractHelper
 
         if (!$this->session->loginById($customer->getId())) {
             $this->addUnspecifiedError();
+        }
+    }
+
+    private function createCustomer(array $userData): ?Customer
+    {
+        try {
+            /** @var Customer $customer */
+            $customer = $this->customerFactory->create();
+            
+            $store = $this->storeManager->getStore();
+            $customer->setWebsiteId($store->getWebsiteId());
+            $customer->setGroupId($store->getStoreGroupId());
+            $customer->setStoreId($store->getId());
+
+            $customer->setEmail($userData['email']);
+            $customer->setFirstname($userData['given_name']);
+            $customer->setLastname($userData['family_name']);
+
+            $this->customerRes->save($customer);
+            return $customer;
+        } catch (Throwable $e) {
+            $this->logger->error('WikaGroup AzureB2cSSO: Failed to create customer');
+            $this->logger->error($e->getMessage());
+            $this->addUnspecifiedError();
+            return null;
         }
     }
 

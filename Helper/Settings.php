@@ -23,6 +23,11 @@ class Settings extends AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/show_button');
     }
 
+    public function createMagentoCustomer(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/general/create_mage_customer');
+    }
+
     public function useCustomCss(): bool
     {
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/use_custom_css');
