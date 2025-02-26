@@ -59,40 +59,58 @@ class Data extends AbstractHelper
 
     public function loginAsUser(array $userData): void
     {
+        $isNewUser = false;
+
         // Search for OAuth ID first
         $customer = $this->findCustomerByOauthId($userData['oauthId']);
 
+        // Search for email afterwards
         if ($customer == null) {
-            // Search for email afterwards
+            $isNewUser = true;
             $customer = $this->findCustomerByEmail($userData['email']);
-            if ($customer == null || empty($customer->getId())) {
-                if ($this->settings->createMagentoCustomer()) {
-                    if ($this->createCustomer($userData) === null) {
-                        return;
-                    }
-                } else {
-                    $this->addError((string)__('There is no registered customer with the given email address.'));
+        }
+
+        if ($customer == null || empty($customer->getId())) {
+            // Create a new Magento customer
+            if ($this->settings->createMagentoCustomer()) {
+                $customer = $this->createCustomer($userData);
+                if ($customer === null) {
                     return;
                 }
-            }
-            try {
-                /** @var User $user */
-                $user = $this->userFactory->create();
-                $user->setCustomerId((int)$customer->getId());
-                $user->setOauthUserId($userData['oauthId']);
-                $this->userRes->save($user);
-            } catch (Throwable $e) {
-                $this->logger->error('WikaGroup AzureB2cSSO: Failed to update customer');
-                $this->logger->error($e->getMessage());
-                $this->addUnspecifiedError();
+            } else {
+                $this->addError((string)__('There is no registered customer with the given email address.'));
                 return;
             }
+        }
+
+        if ($isNewUser && !$this->createOauthUser($customer, $userData)) {
+            return;
         }
 
         $this->updateCustomer($customer, $userData);
 
         if (!$this->session->loginById($customer->getId())) {
             $this->addUnspecifiedError();
+        }
+    }
+
+    private function createOauthUser(Customer $customer, array $userData): bool
+    {
+        try {
+            /** @var User $user */
+            $user = $this->userFactory->create();
+            $user->setCustomerId((int)$customer->getId());
+            $user->setOauthUserId($userData['oauthId']);
+            $this->userRes->save($user);
+
+            return true;
+        } catch (Throwable $e) {
+            $this->logger->error('WikaGroup AzureB2cSSO: Failed to update OAuth user');
+            $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
+            $this->addUnspecifiedError();
+
+            return false;
         }
     }
 
@@ -116,6 +134,7 @@ class Data extends AbstractHelper
         } catch (Throwable $e) {
             $this->logger->error('WikaGroup AzureB2cSSO: Failed to create customer');
             $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
             $this->addUnspecifiedError();
             return null;
         }
@@ -131,6 +150,7 @@ class Data extends AbstractHelper
         } catch (Throwable $e) {
             $this->logger->error('WikaGroup AzureB2cSSO: Failed to update customer');
             $this->logger->error($e->getMessage());
+            $this->logger->error($e->getTraceAsString());
             $this->addUnspecifiedError();
             return;
         }
