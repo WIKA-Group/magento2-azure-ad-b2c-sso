@@ -7,6 +7,7 @@
             </general>
             <connection>
                 <default_algorithm>RS256</default_algorithm>
+                <leeway>5</leeway>
             </connection>
         </azure_b2c>
     </default>

@@ -67,4 +67,9 @@ class Settings extends AbstractHelper
     {
         return (string)$this->scopeConfig->getValue('azure_b2c/connection/default_algorithm');
     }
+
+    public function getLeewayTime(): int
+    {
+        return (int)$this->scopeConfig->getValue('azure_b2c/connection/leeway');
+    }
 }

@@ -133,6 +133,8 @@ class AzureB2cProvider extends GenericProvider
                 throw new RuntimeException('id_token is expired');
             }
 
+            JWT::$leeway = $this->settings->getLeewayTime();
+
             // signature validation and return claims
             return (array) JWT::decode($idToken, JWK::parseKeySet($this->getJWTKeys($openIdConfig->jwks_uri), $this->settings->getDefaultAlgorithm()));
         } catch (Exception $ex) {

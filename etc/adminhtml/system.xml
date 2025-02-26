@@ -21,6 +21,7 @@
                 <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Create new Magento customer</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Create new Magento customer if it not exists yet</comment>
                 </field>
 
                 <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
@@ -70,6 +71,11 @@
 
                 <field id="default_algorithm" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Default algorithm</label>
+                </field>
+
+                <field id="leeway" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Leeway time</label>
+                    <comment>When checking nbf, iat or expiration times, the provided extra leeway time accounts for clock skew.</comment>
                 </field>
             </group>
         </section>
