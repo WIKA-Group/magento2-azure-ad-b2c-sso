@@ -126,8 +126,8 @@ class Data extends AbstractHelper
             $customer->setStoreId($store->getId());
 
             $customer->setEmail($userData['email']);
-            $customer->setFirstname($userData['given_name']);
-            $customer->setLastname($userData['family_name']);
+            $customer->setFirstname($userData['given_name'] ?? '');
+            $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
 
             $this->customerRes->save($customer);
             return $customer;
@@ -144,8 +144,8 @@ class Data extends AbstractHelper
     {
         try {
             $customer->setEmail($userData['email']);
-            $customer->setFirstname($userData['given_name']);
-            $customer->setLastname($userData['family_name']);
+            $customer->setFirstname($userData['given_name'] ?? '');
+            $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
             $this->customerRes->save($customer);
         } catch (Throwable $e) {
             $this->logger->error('WikaGroup AzureB2cSSO: Failed to update customer');
