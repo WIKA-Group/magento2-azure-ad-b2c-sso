@@ -126,7 +126,7 @@ class Data extends AbstractHelper
             $customer->setStoreId($store->getId());
 
             $customer->setEmail($userData['email']);
-            $customer->setFirstname($userData['given_name'] ?? '');
+            $customer->setFirstname($userData['given_name'] ?? $userData['name'] ?? '');
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
 
             $this->customerRes->save($customer);
@@ -144,7 +144,7 @@ class Data extends AbstractHelper
     {
         try {
             $customer->setEmail($userData['email']);
-            $customer->setFirstname($userData['given_name'] ?? '');
+            $customer->setFirstname($userData['given_name'] ?? $userData['name'] ?? '');
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
             $this->customerRes->save($customer);
         } catch (Throwable $e) {
