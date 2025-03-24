@@ -5,75 +5,75 @@
             <label>WIKA Group</label>
         </tab>
 
-        <section id="azure_b2c" sortOrder="0"  showInDefault="1" showInWebsite="0" showInStore="0">
+        <section id="azure_b2c" sortOrder="0"  showInDefault="1" showInWebsite="0" showInStore="1">
             <tab>wika_group</tab>
             <label>Azure B2C</label>
             <resource>WikaGroup_AzureB2cSSO::config_wika_azureb2c</resource>
 
-            <group id="general" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="general" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">
                 <label>General</label>
 
-                <field id="enable_sso" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="enable_sso" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Enable SSO with Azure B2C</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Create new Magento customer</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Create new Magento customer if it not exists yet</comment>
                 </field>
 
-                <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Log out from Azure</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Log out from Azure if customer logs out</comment>
                 </field>
 
-                <field id="show_button" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="show_button" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Show button</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Show button "Login with SSO" on login page</comment>
                 </field>
 
-                <field id="use_custom_css" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="use_custom_css" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Use custom CSS</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>(Only if show button) You can use the element IDs "wikaGroupAzureSsoButtonContainer" and "wikaGroupAzureSsoButton" in your CSS</comment>
                 </field>
 
-                <field id="custom_container_class" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="custom_container_class" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Container classes</label>
                     <comment>The given text will be added to the class attribute of the div around the button.</comment>
                 </field>
 
-                <field id="custom_button_class" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="custom_button_class" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Button classes</label>
                     <comment>The given text will be added to the class attribute of the button.</comment>
                 </field>
             </group>
 
-            <group id="connection" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="connection" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">
                 <label>Connection</label>
 
-                <field id="client_id" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="client_id" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Client ID</label>
                 </field>
 
-                <field id="client_secret" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="client_secret" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Client secret</label>
                 </field>
 
-                <field id="base_url" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="base_url" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Base URL</label>
                     <comment><![CDATA[e.g. https://&lt;domain-name&gt;.b2clogin.com/&lt;domain-name&gt;.onmicrosoft.com/&lt;policy-name&gt;]]></comment>
                 </field>
 
-                <field id="default_algorithm" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="default_algorithm" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Default algorithm</label>
                 </field>
 
-                <field id="leeway" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="leeway" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Leeway time</label>
                     <comment>When checking nbf, iat or expiration times, the provided extra leeway time accounts for clock skew.</comment>
                 </field>
