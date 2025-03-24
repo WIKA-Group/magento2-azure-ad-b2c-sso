@@ -14,6 +14,8 @@ class Settings extends AbstractHelper
         return $this->_urlBuilder->getUrl("azureb2c/login/callback");
     }
 
+    // MARK: General
+
     public function isSsoEnabled(): bool
     {
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/enable_sso', ScopeInterface::SCOPE_STORES);
@@ -49,6 +51,8 @@ class Settings extends AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/log_out_from_azure', ScopeInterface::SCOPE_STORES);
     }
 
+    // MARK: Connection
+
     public function getClientId(): string
     {
         return (string)$this->scopeConfig->getValue('azure_b2c/connection/client_id', ScopeInterface::SCOPE_STORES);
@@ -72,5 +76,22 @@ class Settings extends AbstractHelper
     public function getLeewayTime(): int
     {
         return (int)$this->scopeConfig->getValue('azure_b2c/connection/leeway', ScopeInterface::SCOPE_STORES);
+    }
+
+    // MARK: Autologin
+
+    public function isAutologinEnabled(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/autologin/enable_autologin', ScopeInterface::SCOPE_STORES);
+    }
+
+    public function getGetName(): string
+    {
+        return (string)$this->scopeConfig->getValue('azure_b2c/autologin/get_name', ScopeInterface::SCOPE_STORES);
+    }
+
+    public function getGetValue(): string
+    {
+        return (string)$this->scopeConfig->getValue('azure_b2c/autologin/get_value', ScopeInterface::SCOPE_STORES);
     }
 }

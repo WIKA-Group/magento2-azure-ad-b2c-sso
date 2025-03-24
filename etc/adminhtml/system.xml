@@ -78,6 +78,24 @@
                     <comment>When checking nbf, iat or expiration times, the provided extra leeway time accounts for clock skew.</comment>
                 </field>
             </group>
+
+            <group id="autologin" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">
+                <label>Autologin</label>
+                <comment>Checks for a given GET parameter in order to redirect to login again (e.g. after registration in B2C)</comment>
+
+                <field id="enable_autologin" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Enable autologin</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="get_name" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>GET parameter name</label>
+                </field>
+
+                <field id="get_value" type="text" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>GET parameter value</label>
+                </field>
+            </group>
         </section>
     </system>
 </config>
