@@ -16,7 +16,7 @@ class LogoutPostdispatch implements \Magento\Framework\Event\ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer): void
     {
-        if (!$this->helper->getSettings()->logoutFromAzure()) {
+        if (!$this->helper->getSettings()->isSsoEnabled() || !$this->helper->getSettings()->logoutFromAzure()) {
             return;
         }
 

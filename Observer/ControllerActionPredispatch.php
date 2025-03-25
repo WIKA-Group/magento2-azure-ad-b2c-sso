@@ -16,7 +16,10 @@ class ControllerActionPredispatch implements \Magento\Framework\Event\ObserverIn
 
     public function execute(\Magento\Framework\Event\Observer $observer): void
     {
-        if ($this->helper->isLoggedIn() || !$this->helper->getSettings()->isAutologinEnabled()) {
+        if ($this->helper->isLoggedIn() ||
+            !$this->helper->getSettings()->isSsoEnabled() ||
+            !$this->helper->getSettings()->isAutologinEnabled()
+        ) {
             return;
         }
 
