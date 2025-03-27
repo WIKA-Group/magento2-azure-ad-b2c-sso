@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WikaGroup\AzureB2cSSO\Controller\Login;
 
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Request\Http as Request;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\Controller\Result\Forward;
 use Magento\Store\Model\StoreManagerInterface;
@@ -15,6 +16,7 @@ class Authorize implements HttpGetActionInterface
     public function __construct(
         protected StoreManagerInterface $storeManager,
         protected Http $response,
+        protected Request $request,
         protected Forward $forward,
         protected Data $helper,
     ) {
@@ -30,6 +32,14 @@ class Authorize implements HttpGetActionInterface
             $this->forward->forward('noroute');
             return;
         }
-        $this->helper->newAzureB2cProvider()->authorize();
+
+        $options = [];
+        if (array_key_exists('login_hint', $_GET)) {
+            $options['login_hint'] = $_GET['login_hint'];
+        } elseif ($this->request->getParam('login_hint') !== null) {
+            $options['login_hint'] = $this->request->getParam('login_hint');
+        }
+
+        $this->helper->newAzureB2cProvider()->authorize($options);
     }
 }
