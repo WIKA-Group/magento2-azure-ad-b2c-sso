@@ -23,4 +23,44 @@ As the customer is already logged in in B2C, no input is required and a redirect
 ![image](doc/AutologinSettings.png)
 
 ## Events
+
+### customer_login
 Observers for the event `customer_login` will be triggered if a customer uses Azure B2C to login.
+
+### azure_b2c_sso_[create|update]_costomer_after
+The extensions triggers an event after a new customer was created and after a customer has been updated.
+
+[More details in official documentation](https://developer.adobe.com/commerce/php/development/components/events-and-observers/)
+
+**Usage of the events**  
+<vendor_name>/<module_name>/etc/events.xml
+```xml
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="azure_b2c_sso_create_customer_after">
+        <observer name="<vendor_name>_sso_create_customer_after" instance="<vendor_name>\<module_name>\Observer\SsoCreatedCustomer"/>
+    </event>
+    <event name="azure_b2c_sso_update_customer_after">
+        <observer name="<vendor_name>_sso_update_customer_after" instance="<vendor_name>\<module_name>\Observer\SsoUpdatedCustomer"/>
+    </event>
+</config>
+```
+
+<vendor_name>\<module_name>\Observer\SsoCreatedCustomer.php or <vendor_name>\<module_name>\Observer\SsoUpdatedCustomer.php
+```php
+<?php
+
+namespace <vendor_name>\<module_name>\Observer;
+
+use Magento\Framework\Event\ObserverInterface;
+
+class SsoCreatedCustomer implements ObserverInterface
+{
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        $userData = $observer->getData('user_data');
+        // Do some work with that data...
+        $familyName = $userData['family_name'];
+    }
+}
+```

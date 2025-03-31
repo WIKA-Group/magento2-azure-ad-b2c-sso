@@ -16,6 +16,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         private \Magento\Customer\Model\Session $session,
         private \Magento\Framework\Message\Manager $messageManager,
         private \Magento\Store\Model\StoreManagerInterface $storeManager,
+        private \Magento\Framework\Event\ManagerInterface $eventManager,
         // Mage2 Customer
         private \Magento\Customer\Model\CustomerFactory $customerFactory,
         private \Magento\Customer\Model\ResourceModel\Customer $customerRes,
@@ -114,6 +115,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
 
             $this->customerRes->save($customer);
+
+            $this->eventManager->dispatch('azure_b2c_sso_create_customer_after', ['user_data' => $userData]);
+
             return $customer;
         } catch (\Throwable $e) {
             $this->_logger->error('WikaGroup AzureB2cSSO: Failed to create customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
@@ -129,6 +133,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $customer->setFirstname($userData['given_name'] ?? $userData['name'] ?? '');
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
             $this->customerRes->save($customer);
+
+            $this->eventManager->dispatch('azure_b2c_sso_update_customer_after', ['user_data' => $userData]);
         } catch (\Throwable $e) {
             $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->addUnspecifiedError();
