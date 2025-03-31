@@ -5,39 +5,25 @@ declare(strict_types=1);
 namespace WikaGroup\AzureB2cSSO\Helper;
 
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\ResourceModel\Customer as CustomerRes;
-use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory;
-use Magento\Customer\Model\Session;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Message\Manager;
-use Magento\Store\Model\StoreManagerInterface;
-use Psr\Log\LoggerInterface;
-use Throwable;
 use WikaGroup\AzureB2cSSO\Model\AzureB2cProvider;
-use WikaGroup\AzureB2cSSO\Model\ResourceModel\User as UserRes;
-use WikaGroup\AzureB2cSSO\Model\ResourceModel\User\CollectionFactory as UserCollectionFactory;
 use WikaGroup\AzureB2cSSO\Model\User;
-use WikaGroup\AzureB2cSSO\Model\UserFactory;
 
-class Data extends AbstractHelper
+class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     public function __construct(
-        Context $context,
+        \Magento\Framework\App\Helper\Context $context,
         private Settings $settings,
-        private Session $session,
-        private LoggerInterface $logger,
-        private Manager $messageManager,
-        private StoreManagerInterface $storeManager,
+        private \Magento\Customer\Model\Session $session,
+        private \Magento\Framework\Message\Manager $messageManager,
+        private \Magento\Store\Model\StoreManagerInterface $storeManager,
         // Mage2 Customer
-        private CustomerFactory $customerFactory,
-        private CustomerRes $customerRes,
-        private CollectionFactory $customerCollFactory,
+        private \Magento\Customer\Model\CustomerFactory $customerFactory,
+        private \Magento\Customer\Model\ResourceModel\Customer $customerRes,
+        private \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollFactory,
         // AzureB2C User
-        private UserFactory $userFactory,
-        private UserRes $userRes,
-        private UserCollectionFactory $userCollFactory,
+        private \WikaGroup\AzureB2cSSO\Model\UserFactory $userFactory,
+        private \WikaGroup\AzureB2cSSO\Model\ResourceModel\User $userRes,
+        private \WikaGroup\AzureB2cSSO\Model\ResourceModel\User\CollectionFactory $userCollFactory,
     ) {
         parent::__construct($context);
     }
@@ -104,10 +90,8 @@ class Data extends AbstractHelper
             $this->userRes->save($user);
 
             return true;
-        } catch (Throwable $e) {
-            $this->logger->error('WikaGroup AzureB2cSSO: Failed to update OAuth user');
-            $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+        } catch (\Throwable $e) {
+            $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update OAuth user', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->addUnspecifiedError();
 
             return false;
@@ -131,10 +115,8 @@ class Data extends AbstractHelper
 
             $this->customerRes->save($customer);
             return $customer;
-        } catch (Throwable $e) {
-            $this->logger->error('WikaGroup AzureB2cSSO: Failed to create customer');
-            $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+        } catch (\Throwable $e) {
+            $this->_logger->error('WikaGroup AzureB2cSSO: Failed to create customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->addUnspecifiedError();
             return null;
         }
@@ -147,10 +129,8 @@ class Data extends AbstractHelper
             $customer->setFirstname($userData['given_name'] ?? $userData['name'] ?? '');
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');
             $this->customerRes->save($customer);
-        } catch (Throwable $e) {
-            $this->logger->error('WikaGroup AzureB2cSSO: Failed to update customer');
-            $this->logger->error($e->getMessage());
-            $this->logger->error($e->getTraceAsString());
+        } catch (\Throwable $e) {
+            $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->addUnspecifiedError();
             return;
         }
