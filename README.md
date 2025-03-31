@@ -27,8 +27,12 @@ As the customer is already logged in in B2C, no input is required and a redirect
 ### customer_login
 Observers for the event `customer_login` will be triggered if a customer uses Azure B2C to login.
 
-### azure_b2c_sso_[create|update]_costomer_after
+### azure_b2c_sso_[create|update]_customer_after
 The extensions triggers an event after a new customer was created and after a customer has been updated.
+
+The event `azure_b2c_sso_create_customer_after` is triggered after this module created a new magento customer.
+
+The event `azure_b2c_sso_update_customer_after` is triggered after this module updated a magento customer. The update also happends after a customer was created.
 
 [More details in official documentation](https://developer.adobe.com/commerce/php/development/components/events-and-observers/)
 
