@@ -9,6 +9,7 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
     public function __construct(
         protected \Magento\Store\Model\StoreManagerInterface $storeManager,
         protected \Magento\Framework\App\Response\Http $response,
+        protected \Magento\Framework\App\Response\RedirectInterface $redirect,
         protected \Magento\Framework\App\Request\Http $request,
         protected \Magento\Framework\Controller\Result\Forward $forward,
         protected \WikaGroup\AzureB2cSSO\Helper\Data $helper,
@@ -33,6 +34,7 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
             $options['login_hint'] = $this->request->getParam('login_hint');
         }
 
+        $this->helper->getSession()->setSsoReferer($this->redirect->getRefererUrl());
         $this->helper->newAzureB2cProvider()->authorize($options);
     }
 }

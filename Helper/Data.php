@@ -39,6 +39,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->settings;
     }
 
+    public function getSession(): \Magento\Customer\Model\Session
+    {
+        return $this->session;
+    }
+
     public function isLoggedIn(): bool
     {
         return $this->session->isLoggedIn();

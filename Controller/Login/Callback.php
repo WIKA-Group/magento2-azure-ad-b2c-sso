@@ -52,6 +52,6 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
 
         $user = $this->helper->newAzureB2cProvider()->getUserInfo($_GET['code']);
         $this->helper->loginAsUser($user);
-        return $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());
+        return $this->response->setRedirect($this->helper->getSession()->getSsoReferer());
     }
 }
