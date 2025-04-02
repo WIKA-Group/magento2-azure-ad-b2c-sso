@@ -1,16 +1,15 @@
-<?php 
-namespace WikaGroup\AzureB2cSSO\Observer;
+<?php
 
-use Magento\Framework\App\Response\Http;
-use Magento\Framework\UrlInterface;
-use WikaGroup\AzureB2cSSO\Helper\Data;
+declare(strict_types=1);
+
+namespace WikaGroup\AzureB2cSSO\Observer;
 
 class ControllerActionPredispatch implements \Magento\Framework\Event\ObserverInterface 
 {
     public function __construct(
-        private UrlInterface $url,
-        private Data $helper,
-        private Http $http,
+        private \Magento\Framework\UrlInterface $url,
+        private \WikaGroup\AzureB2cSSO\Helper\Data $helper,
+        private \Magento\Framework\App\Response\Http $http,
     ) {
     }
 

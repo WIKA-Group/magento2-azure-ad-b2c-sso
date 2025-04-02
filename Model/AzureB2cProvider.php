@@ -1,22 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WikaGroup\AzureB2cSSO\Model;
 
-use Exception;
 use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
 use Laminas\Http\Client;
-use League\OAuth2\Client\Provider\GenericProvider;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use RuntimeException;
-use UnexpectedValueException;
-use WikaGroup\AzureB2cSSO\Helper\Settings;
 
-class AzureB2cProvider extends GenericProvider
+class AzureB2cProvider extends \League\OAuth2\Client\Provider\GenericProvider
 {
     public function __construct(
-        protected ScopeConfigInterface $scopeConfig,
-        protected Settings $settings,
+        protected \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        protected \WikaGroup\AzureB2cSSO\Helper\Settings $settings,
     ) {
         parent::__construct([
             'clientId' => $this->settings->getClientId(),
@@ -60,7 +56,7 @@ class AzureB2cProvider extends GenericProvider
         $request  = $this->getAccessTokenRequest($params);
         $response = $this->getParsedResponse($request);
         if (false === is_array($response)) {
-            throw new UnexpectedValueException(
+            throw new \UnexpectedValueException(
                 'Invalid response received from Authorization Server. Expected JSON.'
             );
         }
@@ -79,8 +75,8 @@ class AzureB2cProvider extends GenericProvider
             $client->setUri($this->settings->getBaseUrl() .'/v2.0/.well-known/openid-configuration');
             $client->setMethod('GET');
             $response = $client->send();
-        } catch (Exception $ex) {
-            throw new RuntimeException("Error on getting OpenID Configuration. {$ex}");
+        } catch (\Exception $ex) {
+            throw new \RuntimeException("Error on getting OpenID Configuration. {$ex}");
         }
 
         return json_decode((string)$response->getBody());
@@ -122,23 +118,23 @@ class AzureB2cProvider extends GenericProvider
 
             // iss validation
             if (strcmp($payloadJson['iss'], $openIdConfig->issuer)) {
-                throw new RuntimeException('iss on id_token does not match issuer value on the OpenID configuration');
+                throw new \RuntimeException('iss on id_token does not match issuer value on the OpenID configuration');
             }
             // aud validation
             if (strpos($payloadJson['aud'], $this->settings->getClientId()) === false) {
-                throw new RuntimeException('aud on id_token does not match the client_id for this application');
+                throw new \RuntimeException('aud on id_token does not match the client_id for this application');
             }
             // exp validation
             if ((int) $payloadJson['exp'] < time()) {
-                throw new RuntimeException('id_token is expired');
+                throw new \RuntimeException('id_token is expired');
             }
 
             JWT::$leeway = $this->settings->getLeewayTime();
 
             // signature validation and return claims
             return (array) JWT::decode($idToken, JWK::parseKeySet($this->getJWTKeys($openIdConfig->jwks_uri), $this->settings->getDefaultAlgorithm()));
-        } catch (Exception $ex) {
-            throw new RuntimeException("Error on validationg id_token. {$ex}");
+        } catch (\Exception $ex) {
+            throw new \RuntimeException("Error on validationg id_token. {$ex}");
         }
     }
 }

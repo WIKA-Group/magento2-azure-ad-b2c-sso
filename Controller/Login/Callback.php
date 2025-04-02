@@ -4,29 +4,21 @@ declare(strict_types=1);
 
 namespace WikaGroup\AzureB2cSSO\Controller\Login;
 
-use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\App\Response\Http;
-use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\App\State;
-use Magento\Framework\Controller\Result\Forward;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\UrlInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use WikaGroup\AzureB2cSSO\Helper\Data;
 
-class Callback implements HttpGetActionInterface
+class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     public function __construct(
-        protected StoreManagerInterface $storeManager,
-        protected Forward $forward,
+        protected \Magento\Store\Model\StoreManagerInterface $storeManager,
+        protected \Magento\Framework\Controller\Result\Forward $forward,
         protected State $appState,
-        protected Http $response,
-        protected UrlInterface $url,
-        protected Data $helper,
+        protected \Magento\Framework\App\Response\Http $response,
+        protected \Magento\Framework\UrlInterface $url,
+        protected \WikaGroup\AzureB2cSSO\Helper\Data $helper,
     ) {
     }
 
-    public function execute(): ResultInterface|ResponseInterface
+    public function execute(): \Magento\Framework\Controller\ResultInterface|\Magento\Framework\App\ResponseInterface
     {
         if ($this->helper->isLoggedIn()) {
             return $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());

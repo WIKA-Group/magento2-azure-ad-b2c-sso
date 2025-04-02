@@ -4,21 +4,14 @@ declare(strict_types=1);
 
 namespace WikaGroup\AzureB2cSSO\Controller\Login;
 
-use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\App\Request\Http as Request;
-use Magento\Framework\App\Response\Http;
-use Magento\Framework\Controller\Result\Forward;
-use Magento\Store\Model\StoreManagerInterface;
-use WikaGroup\AzureB2cSSO\Helper\Data;
-
-class Authorize implements HttpGetActionInterface
+class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     public function __construct(
-        protected StoreManagerInterface $storeManager,
-        protected Http $response,
-        protected Request $request,
-        protected Forward $forward,
-        protected Data $helper,
+        protected \Magento\Store\Model\StoreManagerInterface $storeManager,
+        protected \Magento\Framework\App\Response\Http $response,
+        protected \Magento\Framework\App\Request\Http $request,
+        protected \Magento\Framework\Controller\Result\Forward $forward,
+        protected \WikaGroup\AzureB2cSSO\Helper\Data $helper,
     ) {
     }
 

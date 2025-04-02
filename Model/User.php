@@ -1,15 +1,10 @@
 <?php
-/**
- * Copyright ©  All rights reserved.
- * See COPYING.txt for license details.
- */
+
 declare(strict_types=1);
 
 namespace WikaGroup\AzureB2cSSO\Model;
 
-use Magento\Framework\Model\AbstractModel;
-
-class User extends AbstractModel
+class User extends \Magento\Framework\Model\AbstractModel
 {
     private const CUSTOMER_ID = 'customer_id';
     private const OAUTH_USER_ID = 'oauth_user_id';
