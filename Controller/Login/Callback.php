@@ -20,8 +20,10 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
 
     public function execute(): \Magento\Framework\Controller\ResultInterface|\Magento\Framework\App\ResponseInterface
     {
+        $redirect = $this->helper->getSession()->getSsoReferer() ?: $this->storeManager->getStore()->getBaseUrl();
+
         if ($this->helper->isLoggedIn()) {
-            return $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());
+            return $this->response->setRedirect($redirect);
         }
 
         if (!$this->helper->getSettings()->isSsoEnabled()) {
@@ -41,17 +43,17 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
                 exit;
             } else {
                 $this->helper->addUnspecifiedError();
-                return $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());
+                return $this->response->setRedirect($redirect);
             }
         }
 
         if (!array_key_exists('code', $_GET)) {
             $this->helper->addUnspecifiedError();
-            return $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());
+            return $this->response->setRedirect($redirect);
         }
 
         $user = $this->helper->newAzureB2cProvider()->getUserInfo($_GET['code']);
         $this->helper->loginAsUser($user);
-        return $this->response->setRedirect($this->helper->getSession()->getSsoReferer());
+        return $this->response->setRedirect($redirect);
     }
 }
