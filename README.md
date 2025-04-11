@@ -1,6 +1,9 @@
 # Mage2 Module WIKA Azure B2C
 
-Magento2 Module to add support for a login via Azure B2C
+Magento2 Module to add support for a login via Azure B2C.
+
+This module can create a new Magento customer. It only sets the email, firstname and lastname.  
+If you want to fill other fields or store an address, you can use the events.
 
 > **Important:** Ensure that the email address is delivered in the Azure B2C response.
 
