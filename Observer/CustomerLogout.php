@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WikaGroup\AzureB2cSSO\Observer;
 
-class LogoutPostdispatch implements \Magento\Framework\Event\ObserverInterface 
+class CustomerLogout implements \Magento\Framework\Event\ObserverInterface 
 {
     public function __construct(
         private \Magento\Framework\UrlInterface $url,
@@ -15,7 +15,10 @@ class LogoutPostdispatch implements \Magento\Framework\Event\ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer): void
     {
-        if (!$this->helper->getSettings()->isSsoEnabled() || !$this->helper->getSettings()->logoutFromAzure()) {
+        if (!$this->helper->getSettings()->isSsoEnabled() ||
+            !$this->helper->getSettings()->logoutFromAzure() ||
+            substr(php_sapi_name(), 0, 3) == 'cgi'
+        ) {
             return;
         }
 

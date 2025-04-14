@@ -7,6 +7,31 @@ If you want to fill other fields or store an address, you can use the events.
 
 > **Important:** Ensure that the email address is delivered in the Azure B2C response.
 
+**Table of contents**
+- [Installation](#installation)
+- [Updating to latest version](#updating-to-latest-version)
+- [Configuration](#configuration)
+  - [Autologin after registration in B2C](#autologin-after-registration-in-b2c)
+  - [Log out from Azure B2C](#log-out-from-azure-b2c)
+- [Events](#events)
+  - [customer_login](#customer_login)
+  - [customer_logout_after](#customer_logout_after)
+  - [azure_b2c_sso_[create|update]_customer_after](#azure_b2c_sso_createupdate_customer_after)
+
+## Installation
+This Magento2 module can be installed using composer:  
+`> composer require wika-group/magento2-azure-ad-b2c-sso`
+
+To remove it from the list of required packages use the following command:  
+`> composer remove wika-group/magento2-azure-ad-b2c-sso`
+
+## Updating to latest version
+With the following command composer checks all packages in the composer.json for the latest version:  
+`> composer update`
+
+If you only want to check this package for newer versions, you can use  
+`> composer update wika-group/magento2-azure-ad-b2c-sso`
+
 ## Configuration
 The configuration can be found in the admin backend under:  
 `Stores` -> `Settings` -> `Configuration` -> `WIKA GROUP` -> `Azure B2C`
@@ -17,7 +42,7 @@ The response will be processed from the controller `<your-domain>/azureb2c/login
 
 ![image](doc/Settings.png)
 
-## Autologin after registration in B2C
+### Autologin after registration in B2C
 The first time a customer is registrating on the shop, the redirect after the registration takes them back to the shop.
 But the shop doesn't know that the user is logged in.
 For this scenario, a GET parameter can be used to automatically redirect the user to the login again.
@@ -25,13 +50,22 @@ As the customer is already logged in in B2C, no input is required and a redirect
 
 ![image](doc/AutologinSettings.png)
 
+### Log out from Azure B2C
+In the admin backend, you can enable logout from Azure B2C after the customer has logged out from Magento.
+The observer for the `customer_logout_after` event will check if the logout from Azure B2C is enabled and will redirect to the logout URI from Azure B2C.
+
 ## Events
 
 ### customer_login
 Observers for the event `customer_login` will be triggered if a customer uses Azure B2C to login.
 
+### customer_logout_after
+The extension adds an additional event after the Session model executed the logout logic.
+`customer_logout` is a default event triggered by the Session model before the logout is done.
+`customer_logout_after` is triggered after the logout logic in the Session::logout function is executed.
+
 ### azure_b2c_sso_[create|update]_customer_after
-The extensions triggers an event after a new customer was created and after a customer has been updated.
+The extension triggers an event after a new customer was created and after a customer has been updated.
 
 The event `azure_b2c_sso_create_customer_after` is triggered after this module created a new magento customer.
 
