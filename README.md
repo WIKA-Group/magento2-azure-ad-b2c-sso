@@ -13,6 +13,7 @@ If you want to fill other fields or store an address, you can use the events.
 - [Configuration](#configuration)
   - [Autologin after registration in B2C](#autologin-after-registration-in-b2c)
   - [Log out from Azure B2C](#log-out-from-azure-b2c)
+- [Call authorize with referer](#call-authorize-with-referer)
 - [Events](#events)
   - [customer_login](#customer_login)
   - [customer_logout_after](#customer_logout_after)
