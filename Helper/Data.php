@@ -112,7 +112,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             
             $store = $this->storeManager->getStore();
             $customer->setWebsiteId($store->getWebsiteId());
-            $customer->setGroupId($store->getStoreGroupId());
+            $customer->setGroupId($this->settings->getGroupId());
             $customer->setStoreId($store->getId());
 
             $customer->setEmail($userData['email']);

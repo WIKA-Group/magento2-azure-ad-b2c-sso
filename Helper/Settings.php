@@ -25,11 +25,6 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/show_button', ScopeInterface::SCOPE_STORES);
     }
 
-    public function createMagentoCustomer(): bool
-    {
-        return (bool)$this->scopeConfig->getValue('azure_b2c/general/create_mage_customer', ScopeInterface::SCOPE_STORES);
-    }
-
     public function useCustomCss(): bool
     {
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/use_custom_css', ScopeInterface::SCOPE_STORES);
@@ -75,6 +70,18 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
     public function getLeewayTime(): int
     {
         return (int)$this->scopeConfig->getValue('azure_b2c/connection/leeway', ScopeInterface::SCOPE_STORES);
+    }
+
+    // MARK: Customer
+
+    public function createMagentoCustomer(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/customer/create_mage_customer', ScopeInterface::SCOPE_STORES);
+    }
+
+    public function getGroupId(): int
+    {
+        return (int)$this->scopeConfig->getValue('azure_b2c/customer/group_id', ScopeInterface::SCOPE_STORES);
     }
 
     // MARK: Autologin

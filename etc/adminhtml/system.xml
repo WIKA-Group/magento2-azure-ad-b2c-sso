@@ -18,12 +18,6 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
-                    <label>Create new Magento customer</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Create new Magento customer if it not exists yet</comment>
-                </field>
-
                 <field id="log_out_from_azure" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
                     <label>Log out from Azure</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -77,6 +71,22 @@
                     <label>Leeway time</label>
                     <comment>When checking nbf, iat or expiration times, the provided extra leeway time accounts for clock skew.</comment>
                 </field>
+            </group>
+
+            <group id="customer" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">
+                <label>Customer</label>
+
+                <field id="create_mage_customer" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Create new Magento customer</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Create new Magento customer if it not exists yet</comment>
+                </field>
+
+                <field id="group_id" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Group to which created users will be assigned</label>
+                    <source_model>WikaGroup\AzureB2cSSO\Model\Config\Source\Group</source_model>
+                </field>
+                
             </group>
 
             <group id="autologin" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">

@@ -2,13 +2,14 @@
 <config>
     <default>
         <azure_b2c>
-            <general>
-                <create_mage_customer>1</create_mage_customer>
-            </general>
             <connection>
                 <default_algorithm>RS256</default_algorithm>
                 <leeway>5</leeway>
             </connection>
+            <customer>
+                <create_mage_customer>1</create_mage_customer>
+                <group_id>0</group_id>
+            </customer>
         </azure_b2c>
     </default>
 </config>

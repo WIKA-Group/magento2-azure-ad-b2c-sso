@@ -4,6 +4,6 @@
         <observer name="wikagroup_azureb2csso_controller_action_predispatch" instance="WikaGroup\AzureB2cSSO\Observer\ControllerActionPredispatch"/>
     </event>
     <event name="controller_action_postdispatch_customer_account_logout">
-        <observer name="wikagroup_azureb2csso_postdispatch_logout " instance="WikaGroup\AzureB2cSSO\Observer\LogoutPostdispatch"/>
+        <observer name="wikagroup_azureb2csso_postdispatch_logout" instance="WikaGroup\AzureB2cSSO\Observer\LogoutPostdispatch"/>
     </event>
 </config>
