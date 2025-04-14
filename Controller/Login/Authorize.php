@@ -27,6 +27,7 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
             return;
         }
 
+        // Check request for "login_hint"
         $options = [];
         if (array_key_exists('login_hint', $_GET)) {
             $options['login_hint'] = $_GET['login_hint'];
@@ -34,7 +35,17 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
             $options['login_hint'] = $this->request->getParam('login_hint');
         }
 
-        $this->helper->getSession()->setSsoReferer($this->redirect->getRefererUrl());
+        // Check if a referer was passed
+        if (array_key_exists('referer', $_GET)) {
+            $referer = $_GET['referer'];
+        } elseif ($this->request->getParam('referer') !== null) {
+            $referer = $this->request->getParam('referer');
+        } else {
+            $referer = $this->redirect->getRefererUrl();
+        }
+        $this->helper->getSession()->setSsoReferer($referer);
+
+        // Forward to Azure B2C
         $this->helper->newAzureB2cProvider()->authorize($options);
     }
 }

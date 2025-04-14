@@ -43,16 +43,22 @@ The response will be processed from the controller `<your-domain>/azureb2c/login
 ![image](doc/Settings.png)
 
 ### Autologin after registration in B2C
-The first time a customer is registrating on the shop, the redirect after the registration takes them back to the shop.
+The first time a customer is registrating on the shop, the redirect after the registration takes them back to the shop.  
 But the shop doesn't know that the user is logged in.
-For this scenario, a GET parameter can be used to automatically redirect the user to the login again.
+For this scenario, a GET parameter can be used to automatically redirect the user to the login again.  
 As the customer is already logged in in B2C, no input is required and a redirect will lead back to the shop, but now the customer will also be logged in to the shop.
 
 ![image](doc/AutologinSettings.png)
 
 ### Log out from Azure B2C
-In the admin backend, you can enable logout from Azure B2C after the customer has logged out from Magento.
+In the admin backend, you can enable logout from Azure B2C after the customer has logged out from Magento.  
 The observer for the `customer_logout_after` event will check if the logout from Azure B2C is enabled and will redirect to the logout URI from Azure B2C.
+
+## Call authorize with referer
+By default the authorize controller will read the referer from the request header, store it in the session and redirect back to it in the callback controller.
+
+You can pass a referer as GET parameter to customize the redirect:  
+`<your-domain>/azureb2c/login/authorize?referer=<your-customer-referer-uri>`
 
 ## Events
 
@@ -60,8 +66,8 @@ The observer for the `customer_logout_after` event will check if the logout from
 Observers for the event `customer_login` will be triggered if a customer uses Azure B2C to login.
 
 ### customer_logout_after
-The extension adds an additional event after the Session model executed the logout logic.
-`customer_logout` is a default event triggered by the Session model before the logout is done.
+The extension adds an additional event after the Session model executed the logout logic.  
+`customer_logout` is a default event triggered by the Session model before the logout is done.  
 `customer_logout_after` is triggered after the logout logic in the Session::logout function is executed.
 
 ### azure_b2c_sso_[create|update]_customer_after
