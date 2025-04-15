@@ -17,7 +17,7 @@ class CustomerLogout implements \Magento\Framework\Event\ObserverInterface
     {
         if (!$this->helper->getSettings()->isSsoEnabled() ||
             !$this->helper->getSettings()->logoutFromAzure() ||
-            substr(php_sapi_name(), 0, 3) == 'cgi'
+            php_sapi_name() === "cli"
         ) {
             return;
         }
