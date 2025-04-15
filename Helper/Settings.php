@@ -84,6 +84,11 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
         return (int)$this->scopeConfig->getValue('azure_b2c/customer/group_id', ScopeInterface::SCOPE_STORES);
     }
 
+    public function shouldIgnoreValidation(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/customer/ignore_validation', ScopeInterface::SCOPE_STORES);
+    }
+
     // MARK: Autologin
 
     public function isAutologinEnabled(): bool

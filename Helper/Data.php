@@ -109,7 +109,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         try {
             /** @var Customer $customer */
             $customer = $this->customerFactory->create();
-            
+            if ($this->settings->shouldIgnoreValidation()) {
+                $customer->setData('ignore_validation_flag', true);
+            }
+
             $store = $this->storeManager->getStore();
             $customer->setWebsiteId($store->getWebsiteId());
             $customer->setGroupId($this->settings->getGroupId());
@@ -134,6 +137,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     private function updateCustomer(Customer $customer, array $userData): void
     {
         try {
+            if ($this->settings->shouldIgnoreValidation()) {
+                $customer->setData('ignore_validation_flag', true);
+            }
+
             $customer->setEmail($userData['email']);
             $customer->setFirstname($userData['given_name'] ?? $userData['name'] ?? '');
             $customer->setLastname($userData['family_name'] ?? $userData['name'] ?? '');

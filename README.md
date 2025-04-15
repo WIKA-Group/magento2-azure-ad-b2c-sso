@@ -42,6 +42,7 @@ To trigger the redirect to Azure for the login, call the route `<your-domain>/az
 The response will be processed from the controller `<your-domain>/azureb2c/login/callback`.
 
 ![image](doc/Settings.png)
+![image](doc/CustomerSettings.png)
 
 ### Autologin after registration in B2C
 The first time a customer is registrating on the shop, the redirect after the registration takes them back to the shop.  

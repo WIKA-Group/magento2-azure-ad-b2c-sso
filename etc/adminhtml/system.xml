@@ -83,10 +83,16 @@
                 </field>
 
                 <field id="group_id" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
-                    <label>Group to which created users will be assigned</label>
+                    <label>Group</label>
                     <source_model>WikaGroup\AzureB2cSSO\Model\Config\Source\Group</source_model>
+                    <comment>Group to which created users will be assigned</comment>
                 </field>
-                
+
+                <field id="ignore_validation" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Ignore validation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Ignore validation when creating or updating a Magento customer</comment>
+                </field>
             </group>
 
             <group id="autologin" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">
