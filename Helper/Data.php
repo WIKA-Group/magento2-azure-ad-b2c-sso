@@ -25,6 +25,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         private \WikaGroup\AzureB2cSSO\Model\UserFactory $userFactory,
         private \WikaGroup\AzureB2cSSO\Model\ResourceModel\User $userRes,
         private \WikaGroup\AzureB2cSSO\Model\ResourceModel\User\CollectionFactory $userCollFactory,
+        // Mage2 Store
+        private \Magento\Store\Model\StoreManagerInterface $storemanager,
     ) {
         parent::__construct($context);
     }
@@ -184,10 +186,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function findCustomerByEmail(string $email): ?Customer
     {
-        $customerColl = $this->customerCollFactory->create()->addFieldToFilter('email', $email);
-        if ($customerColl->count() !== 1) {
-            return null;
-        }
-        return $customerColl->getFirstItem();
+      $websiteID = $this->storemanager->getStore()->getWebsiteId();
+      $customer = $this->customerFactory->create()->setWebsiteId($websiteID)->loadByEmail($email);
+        return $customer;
     }
 }
