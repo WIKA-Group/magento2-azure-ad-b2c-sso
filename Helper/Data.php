@@ -49,12 +49,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->session->isLoggedIn();
     }
 
-    public function loginAsUser(array $userData): void
+    public function loginAsUser(array $userData): vo
     {
         $isNewUser = false;
 
-        // Search for OAuth ID first
-        $customer = $this->findCustomerByOauthId($userData['oauthId']);
+        // Search for OAuth  first
+        $customer = $this->findCustomerByOauth($userData['oauth']);
 
         // Search for email afterwards
         if ($customer == null) {
@@ -62,7 +62,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $customer = $this->findCustomerByEmail($userData['email']);
         }
 
-        if ($customer == null || empty($customer->getId())) {
+        if ($customer == null || empty($customer->get())) {
             // Create a new Magento customer
             if ($this->settings->createMagentoCustomer()) {
                 $customer = $this->createCustomer($userData);
@@ -81,7 +81,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
         $this->updateCustomer($customer, $userData);
 
-        if (!$this->session->loginById($customer->getId())) {
+        if (!$this->session->loginBy($customer->get())) {
             $this->addUnspecifiedError();
         }
     }
@@ -186,9 +186,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
       $store = $this->storeManager->getStore();
       $customer = $this->customerFactory->create()->setWebsiteId($store->getWebsiteId())->loadByEmail($email);
-      if ($customer == null)
-      {
-          return null;
+      if ($customer->getId() === null) {
+            return null;
       }
       return $customer;
     }
