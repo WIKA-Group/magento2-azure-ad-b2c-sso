@@ -184,10 +184,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function findCustomerByEmail(string $email): ?Customer
     {
-        $customerColl = $this->customerCollFactory->create()->addFieldToFilter('email', $email);
-        if ($customerColl->count() !== 1) {
+      $store = $this->storeManager->getStore();
+      $customer = $this->customerFactory->create()->setWebsiteId($store->getWebsiteId())->loadByEmail($email);
+      if ($customer->getId() === null) {
             return null;
-        }
-        return $customerColl->getFirstItem();
+      }
+      return $customer;
     }
 }
