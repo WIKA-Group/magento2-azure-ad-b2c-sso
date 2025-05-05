@@ -20,7 +20,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         // Mage2 Customer
         private \Magento\Customer\Model\CustomerFactory $customerFactory,
         private \Magento\Customer\Model\ResourceModel\Customer $customerRes,
-        private \Magento\Customer\Model\ResourceModel\Customer\CollectionFactory $customerCollFactory,
         // AzureB2C User
         private \WikaGroup\AzureB2cSSO\Model\UserFactory $userFactory,
         private \WikaGroup\AzureB2cSSO\Model\ResourceModel\User $userRes,
@@ -184,11 +183,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function findCustomerByEmail(string $email): ?Customer
     {
-      $store = $this->storeManager->getStore();
-      $customer = $this->customerFactory->create()->setWebsiteId($store->getWebsiteId())->loadByEmail($email);
-      if ($customer->getId() === null) {
+        $store = $this->storeManager->getStore();
+        $customer = $this->customerFactory->create()->setWebsiteId($store->getWebsiteId())->loadByEmail($email);
+        if ($customer->getId() === null) {
             return null;
-      }
-      return $customer;
+        }
+        return $customer;
     }
 }
