@@ -32,7 +32,7 @@ class ControllerActionPredispatch implements \Magento\Framework\Event\ObserverIn
             return;
         }
 
-        $loginUri = $this->url->getUrl('azureb2c/login/authorize');
+        $loginUri = $this->url->getUrl('azureb2c/login/authorize', ['from-autologin' => '1']);
         $this->http->setRedirect($loginUri);
         $this->http->sendResponse();
         die();

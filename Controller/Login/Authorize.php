@@ -35,15 +35,18 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
             $options['login_hint'] = $this->request->getParam('login_hint');
         }
 
-        // Check if a referer was passed
-        if (array_key_exists('referer', $_GET)) {
-            $referer = $_GET['referer'];
-        } elseif ($this->request->getParam('referer') !== null) {
-            $referer = $this->request->getParam('referer');
-        } else {
-            $referer = $this->redirect->getRefererUrl();
+        // If authorize is called by autologin, do not change the referer
+        if ($this->request->getParam('from-autologin') !== '1') {
+            // Check if a referer was passed
+            if (array_key_exists('referer', $_GET)) {
+                $referer = $_GET['referer'];
+            } elseif ($this->request->getParam('referer') !== null) {
+                $referer = $this->request->getParam('referer');
+            } else {
+                $referer = $this->redirect->getRefererUrl();
+            }
+            $this->helper->getSession()->setSsoReferer($referer);
         }
-        $this->helper->getSession()->setSsoReferer($referer);
 
         // Forward to Azure B2C
         $this->helper->newAzureB2cProvider()->authorize($options);
