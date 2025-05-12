@@ -18,8 +18,17 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
 
     public function execute(): void
     {
+        // Check if a referer was passed
+        if (array_key_exists('referer', $_GET)) {
+            $referer = $_GET['referer'];
+        } elseif ($this->request->getParam('referer') !== null) {
+            $referer = $this->request->getParam('referer');
+        } else {
+            $referer = $this->redirect->getRefererUrl();
+        }
+
         if ($this->helper->isLoggedIn()) {
-            $this->response->setRedirect($this->storeManager->getStore()->getBaseUrl());
+            $this->response->setRedirect($referer);
             return;
         }
         if (!$this->helper->getSettings()->isSsoEnabled()) {
@@ -37,14 +46,6 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
 
         // If authorize is called by autologin, do not change the referer
         if ($this->request->getParam('from-autologin') !== '1') {
-            // Check if a referer was passed
-            if (array_key_exists('referer', $_GET)) {
-                $referer = $_GET['referer'];
-            } elseif ($this->request->getParam('referer') !== null) {
-                $referer = $this->request->getParam('referer');
-            } else {
-                $referer = $this->redirect->getRefererUrl();
-            }
             $this->helper->getSession()->setSsoReferer($referer);
         }
 
