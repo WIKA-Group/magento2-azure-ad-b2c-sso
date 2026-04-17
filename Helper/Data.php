@@ -56,12 +56,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $customer = $this->findCustomerByOauthId($userData['oauthId']);
 
         // Search for email afterwards
-        if ($customer == null) {
+        if ($customer === null) {
             $isNewUser = true;
             $customer = $this->findCustomerByEmail($userData['email']);
         }
 
-        if ($customer == null || empty($customer->getId())) {
+        if ($customer === null || empty($customer->getId())) {
             // Create a new Magento customer
             if ($this->settings->createMagentoCustomer()) {
                 $customer = $this->createCustomer($userData);
@@ -78,7 +78,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             return;
         }
 
-        $this->updateCustomer($customer, $userData);
+        $customer = $this->updateCustomer($customer, $userData);
+        if ($customer === null) {
+            return;
+        }
 
         if (!$this->session->loginById($customer->getId())) {
             $this->addUnspecifiedError();
@@ -133,7 +136,44 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
     }
 
-    private function updateCustomer(Customer $customer, array $userData): void
+    private function updateCustomer(Customer $customer, array $userData): ?Customer
+    {
+        // Check if user email has changed
+        $newEmail = $userData['email'];
+        if (strcasecmp($customer->getEmail(), $newEmail) !== 0) {
+            $existingCustomer = $this->findCustomerByEmail($newEmail);
+            if ($existingCustomer && $existingCustomer->getId() !== $customer->getId()) {
+                // If email is already used by another customer entity, update mapping table entry to point to this customer
+                try {
+                    /** @var User $user */
+                    $user = $this->userCollFactory->create()->addFieldToFilter('oauth_user_id', $userData['oauthId'])->getFirstItem();
+                    $user->setCustomerId((int)$existingCustomer->getId());
+                    $this->userRes->save($user);
+                } catch (\Throwable $e) {
+                    $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update mapping table entry', [
+                        'message' => $e->getMessage(), 'trace' => $e->getTraceAsString(),
+                        'old-email' => $customer->getEmail(), 'new-email' => $newEmail,
+                    ]);
+                    $this->addUnspecifiedError();
+                    return null;
+                }
+
+                $this->_logger->info('WikaGroup AzureB2cSSO: Updated user mapping', [
+                    'old-email' => $customer->getEmail(), 'new-email' => $newEmail,
+                ]);
+
+                return $existingCustomer;
+            }
+        }
+
+        if (!$this->updateCustomerData($customer, $userData)) {
+            return null;
+        }
+
+        return $customer;
+    }
+
+    private function updateCustomerData(Customer $customer, array $userData): bool
     {
         try {
             if ($this->settings->shouldIgnoreValidation()) {
@@ -147,10 +187,15 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
             $this->eventManager->dispatch('azure_b2c_sso_update_customer_after', ['user_data' => $userData]);
         } catch (\Throwable $e) {
-            $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            $this->_logger->error('WikaGroup AzureB2cSSO: Failed to update customer', [
+                'message' => $e->getMessage(), 'trace' => $e->getTraceAsString(),
+                'email' => $customer->getEmail(),
+            ]);
             $this->addUnspecifiedError();
-            return;
+            return false;
         }
+
+        return true;
     }
 
     public function addUnspecifiedError(): void
