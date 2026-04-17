@@ -11,11 +11,11 @@
         }
     ],
     "minimum-stability": "stable",
-    "version": "1.13.0",
+    "version": "1.14.0",
     "require": {
         "php": "^8.2",
-        "firebase/php-jwt": "^6.10",
-        "league/oauth2-client": "^2.7",
+        "firebase/php-jwt": "^6.10 || ^7.0",
+        "league/oauth2-client": "^2.9",
         "magento/framework": "*"
     },
     "autoload": {
