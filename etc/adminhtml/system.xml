@@ -45,6 +45,12 @@
                     <label>Button classes</label>
                     <comment>The given text will be added to the class attribute of the button.</comment>
                 </field>
+
+                <field id="log_user_data" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Log user data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Log user data on login</comment>
+                </field>
             </group>
 
             <group id="connection" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">

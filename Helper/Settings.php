@@ -45,6 +45,11 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/general/log_out_from_azure', ScopeInterface::SCOPE_STORES);
     }
 
+    public function logUserData(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/general/log_user_data', ScopeInterface::SCOPE_STORES);
+    }
+
     // MARK: Connection
 
     public function getClientId(): string

@@ -50,6 +50,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function loginAsUser(array $userData): void
     {
+        if ($this->settings->logUserData()) {
+            $this->_logger->info('WikaGroup AzureB2cSSO: Login user data', $userData);
+        }
+
         $isNewUser = false;
 
         // Search for OAuth ID first
