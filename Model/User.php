@@ -14,6 +14,15 @@ class User extends \Magento\Framework\Model\AbstractModel
         $this->_init(\WikaGroup\AzureB2cSSO\Model\ResourceModel\User::class);
     }
 
+    public function beforeSave()
+    {
+        if (!$this->getId()) {
+            $this->setCreatedAt(date('Y-m-d H:i:s'));
+        }
+
+        return parent::beforeSave();
+    }
+
     public function getCustomerId(): int
     {
         return intval($this->getData(self::CUSTOMER_ID));

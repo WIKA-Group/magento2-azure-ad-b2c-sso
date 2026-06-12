@@ -14,5 +14,7 @@
         <constraint xsi:type="unique" referenceId="IDX_WIKAGROUP_AZUREB2C_USER_OAUTH_USER_ID">
             <column name="oauth_user_id"/>
         </constraint>
+
+        <column name="created_at" nullable="true" xsi:type="timestamp"/>
     </table>
 </schema>
