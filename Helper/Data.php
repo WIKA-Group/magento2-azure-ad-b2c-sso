@@ -134,16 +134,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
             // Ensure that the correct customer for the given email is returned
             // after the event may has modified the database
-
-            /** @var Customer $customer */
-            $customer = $this->customerFactory->create();
-            $this->customerRes->loadByEmail($customer, $userData['email']);
-
-            if ($customer->getId() === null) {
-                return null;
-            }
-
-            return $customer;
+            return $this->findCustomerByEmail($userData['email']);
         } catch (\Throwable $e) {
             $this->_logger->error('WikaGroup AzureB2cSSO: Failed to create customer', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             $this->addUnspecifiedError();
@@ -187,16 +178,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
         // Ensure that the correct customer for the given email is returned
         // after the event may has modified the database
-
-        /** @var Customer $customer */
-        $customer = $this->customerFactory->create();
-        $this->customerRes->loadByEmail($customer, $userData['email']);
-
-        if ($customer->getId() === null) {
-            return null;
-        }
-
-        return $customer;
+        return $this->findCustomerByEmail($userData['email']);
     }
 
     private function updateCustomerData(Customer $customer, array $userData): bool
