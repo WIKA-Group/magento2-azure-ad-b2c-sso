@@ -98,7 +98,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             /** @var User $user */
             $user = $this->userFactory->create();
             $user->setCustomerId((int)$customer->getId());
-            $user->setOauthUserId($userData['oauthId']);
+            $user->setOauthUserId($this->combineOAuthId($userData['oauthId']));
             $this->userRes->save($user);
 
             return true;
@@ -152,7 +152,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
                 // If email is already used by another customer entity, update mapping table entry to point to this customer
                 try {
                     /** @var User $user */
-                    $user = $this->userCollFactory->create()->addFieldToFilter('oauth_user_id', $userData['oauthId'])->getFirstItem();
+                    $user = $this->userCollFactory->create()->addFieldToFilter(
+                        'oauth_user_id',
+                        $this->combineOAuthId($userData['oauthId'])
+                    )->getFirstItem();
                     $user->setCustomerId((int)$existingCustomer->getId());
                     $this->userRes->save($user);
                 } catch (\Throwable $e) {
@@ -218,7 +221,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function findCustomerByOauthId(string $oauthId): ?Customer
     {
-        $userColl = $this->userCollFactory->create()->addFieldToFilter('oauth_user_id', $oauthId);
+        $userColl = $this->userCollFactory->create()->addFieldToFilter(
+            'oauth_user_id',
+            $this->combineOAuthId($oauthId),
+        );
         if ($userColl->count() !== 1) {
             return null;
         }
@@ -242,5 +248,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             return null;
         }
         return $customer;
+    }
+
+    private function combineOAuthId(string $oauthId): string {
+        return $this->storeManager->getStore()->getWebsiteId() . '|' . $oauthId;
     }
 }
