@@ -14,6 +14,7 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
         protected State $appState,
         protected \Magento\Framework\App\Response\Http $response,
         protected \Magento\Framework\UrlInterface $url,
+        protected \Magento\Framework\Escaper $escaper,
         protected \WikaGroup\AzureB2cSSO\Helper\Data $helper,
     ) {
     }
@@ -33,12 +34,12 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
         if (array_key_exists('error', $_GET)) {
             if ($this->appState->getMode() !== State::MODE_PRODUCTION) {
                 echo '<h1>Login with Azure B2C failed</h1>';
-                echo '<strong>Error: </strong>' . $_GET['error'] . '<br>';
+                echo '<strong>Error: </strong>' . $this->escaper->escapeHtml((string) $_GET['error']) . '<br>';
                 if (array_key_exists('error_description', $_GET)) {
-                    echo '<strong>Description: </strong>' . $_GET['error_description'] . '<br>';
+                    echo '<strong>Description: </strong>' . $this->escaper->escapeHtml((string) $_GET['error_description']) . '<br>';
                 }
                 if (array_key_exists('state', $_GET)) {
-                    echo '<strong>State: </strong>' . $_GET['state'] . '<br>';
+                    echo '<strong>State: </strong>' . $this->escaper->escapeHtml((string) $_GET['state']) . '<br>';
                 }
                 exit;
             } else {
