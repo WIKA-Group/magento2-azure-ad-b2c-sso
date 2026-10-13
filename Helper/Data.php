@@ -250,7 +250,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $customer;
     }
 
-    private function combineOAuthId(string $oauthId): string {
+    public function combineOAuthId(string $oauthId): string {
         return $this->storeManager->getStore()->getWebsiteId() . '|' . $oauthId;
     }
 }
