@@ -99,6 +99,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Ignore validation when creating or updating a Magento customer</comment>
                 </field>
+
+                <field id="use_extended_validation_rules" type="select" showInDefault="1" showInWebsite="0" showInStore="1">
+                    <label>Use extended validation rules</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Use an extended set of validation rules. It will also allow double quotes, slashes and round parentheses.</comment>
+                </field>
             </group>
 
             <group id="autologin" sortOrder="0" showInDefault="1" showInWebsite="0" showInStore="1">

@@ -9,6 +9,7 @@
             <customer>
                 <create_mage_customer>1</create_mage_customer>
                 <group_id>0</group_id>
+                <use_extended_validation_rules>1</use_extended_validation_rules>
             </customer>
         </azure_b2c>
     </default>

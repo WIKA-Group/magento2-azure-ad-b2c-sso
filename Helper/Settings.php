@@ -94,6 +94,11 @@ class Settings extends \Magento\Framework\App\Helper\AbstractHelper
         return (bool)$this->scopeConfig->getValue('azure_b2c/customer/ignore_validation', ScopeInterface::SCOPE_STORES);
     }
 
+    public function shouldUseExtendedValidationRules(): bool
+    {
+        return (bool)$this->scopeConfig->getValue('azure_b2c/customer/use_extended_validation_rules', ScopeInterface::SCOPE_STORES);
+    }
+
     // MARK: Autologin
 
     public function isAutologinEnabled(): bool
