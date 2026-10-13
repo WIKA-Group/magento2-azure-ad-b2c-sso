@@ -105,11 +105,27 @@ use Magento\Framework\Event\ObserverInterface;
 
 class SsoCreatedCustomer implements ObserverInterface
 {
+    public function __construct(
+        private \WikaGroup\AzureB2cSSO\Helper\Data $ssoHelper,
+        private  \WikaGroup\AzureB2cSSO\Model\ResourceModel\User\CollectionFactory $userCollFactory,
+    ) {}
+
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
         $userData = $observer->getData('user_data');
         // Do some work with that data...
         $familyName = $userData['family_name'];
+
+        // ...
+
+        // Get the combined oauth ID
+        $oauthId = $this->ssoHelper->combineOAuthId($userData['oauthId']);
+
+        // The combined oauth ID can be used to filter for a AzureB2cSSO User model
+        $userColl = $this->userCollFactory->create()->addFieldToFilter(
+            'oauth_user_id',
+            $oauthId,
+        );
     }
 }
 ```
