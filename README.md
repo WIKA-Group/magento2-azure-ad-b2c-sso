@@ -126,6 +126,15 @@ class SsoCreatedCustomer implements ObserverInterface
             'oauth_user_id',
             $oauthId,
         );
+
+        // ...
+
+        // Or you can use the provided helper function to get the AzureB2cSSO User by oauth ID
+        /** @var ?\Magento\Customer\Model\Customer $customer */
+        $customer = $this->ssoHelper->findCustomerByOauthId($userData['oauthId']);
+        if ($customer === null) {
+            // Some error handling
+        }
     }
 }
 ```
