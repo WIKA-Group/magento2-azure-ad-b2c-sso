@@ -16,7 +16,7 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
     ) {
     }
 
-    public function execute(): void
+    public function execute(): \Magento\Framework\Controller\ResultInterface|\Magento\Framework\App\ResponseInterface
     {
         // Check if a referer was passed
         if (array_key_exists('referer', $_GET)) {
@@ -28,12 +28,10 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
         }
 
         if ($this->helper->isLoggedIn()) {
-            $this->response->setRedirect($referer);
-            return;
+            return $this->response->setRedirect($referer);
         }
         if (!$this->helper->getSettings()->isSsoEnabled()) {
-            $this->forward->forward('noroute');
-            return;
+            return $this->forward->forward('noroute');
         }
 
         // Check request for "login_hint"
@@ -50,6 +48,9 @@ class Authorize implements \Magento\Framework\App\Action\HttpGetActionInterface
         }
 
         // Forward to Azure B2C
-        $this->helper->newAzureB2cProvider()->authorize($options);
+        return $this->helper->newAzureB2cProvider()->authorize(
+            $options,
+            fn (string $url) => $this->response->setRedirect($url),
+        );
     }
 }
