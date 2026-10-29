@@ -88,6 +88,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         if (!$this->session->loginById($customer->getId())) {
+            $this->_logger->error('WikaGroup AzureB2cSSO: Login by ID failed', ['customer_id' => $customer->getId()]);
             $this->addUnspecifiedError();
         }
     }

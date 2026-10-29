@@ -9,13 +9,14 @@ use Magento\Framework\App\State;
 class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
 {
     public function __construct(
-        protected \Magento\Store\Model\StoreManagerInterface $storeManager,
-        protected \Magento\Framework\Controller\Result\Forward $forward,
-        protected State $appState,
         protected \Magento\Framework\App\Response\Http $response,
-        protected \Magento\Framework\UrlInterface $url,
+        protected \Magento\Framework\Controller\Result\Forward $forward,
         protected \Magento\Framework\Escaper $escaper,
+        protected \Magento\Framework\UrlInterface $url,
+        protected \Magento\Store\Model\StoreManagerInterface $storeManager,
+        protected \Psr\Log\LoggerInterface $logger,
         protected \WikaGroup\AzureB2cSSO\Helper\Data $helper,
+        protected State $appState,
     ) {
     }
 
@@ -43,12 +44,18 @@ class Callback implements \Magento\Framework\App\Action\HttpGetActionInterface
                 }
                 exit;
             } else {
+                $this->logger->error('WikaGroup AzureB2cSSO: Login with Azure B2C failed', [
+                    'error' => $_GET['error'] ?? '',
+                    'error_description' => $_GET['error_description'] ?? '',
+                    'state' => $_GET['state'] ?? '',
+                ]);
                 $this->helper->addUnspecifiedError();
                 return $this->response->setRedirect($redirect);
             }
         }
 
         if (!array_key_exists('code', $_GET)) {
+            $this->logger->error('WikaGroup AzureB2cSSO: Azure B2C did not return a code');
             $this->helper->addUnspecifiedError();
             return $this->response->setRedirect($redirect);
         }
